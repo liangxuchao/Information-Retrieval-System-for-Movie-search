@@ -1,0 +1,125 @@
+
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+<script src="{% static 'js/jquery.js' %}"></script>   
+<script src="{% static 'js/bootstrap.min.js' %}"></script>   
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.js"></script>
+<header class="section-header">
+    <nav class="navbar navbar-dark navbar-expand p-0 bg-dark">
+        <div class="container-fluid">
+            <ul class="navbar-nav d-none d-md-flex mr-auto">
+                {% comment %} <li class="nav-item"><a class="nav-link" href="#" data-abc="true">Cash On Delivery</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" data-abc="true">Free Delivery</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" data-abc="true">Cash Backs</a></li> {% endcomment %}
+            </ul>
+            <ul class="navbar-nav d-flex align-items-center">
+                {% comment %} <li class="nav-item">
+                    <div class="d-flex flex-row"> <img src="https://i.imgur.com/EYFtR83.jpg" class="rounded-circle" width="30"> </div>
+                </li> {% endcomment %}
+              
+                <li class="nav-item"> <a href="{% url 'index' %}" class="nav-link d-flex align-items-center" data-abc="true"><span>Movie Search</span><i class='bx bxs-chevron-down'></i></a> </li>
+                <li class="nav-item"> <a href="{% url 'genreclassifytfidf' %}" class="nav-link d-flex align-items-center" data-abc="true"><span>Classification</span><i class='bx bxs-chevron-down'></i></a> </li>
+           </ul> <!-- list-inline // -->
+        </div> <!-- navbar-collapse .// -->
+        <!-- container // -->
+    </nav> <!-- header-top-light.// -->
+    
+</header>
+
+
+<div class="container-fluid">
+    <div class="row">
+      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+        <div class="position-sticky pt-3">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{% url 'genreclassifytfidf' %}">
+                <span data-feather="home"></span>
+                Genre Classification By Machine Learning (Tf-idf)
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'genreclassifybd' %}">
+                <span data-feather="file"></span>
+                
+                Genre Classification By Deep Learning (Bidirectional RNNs)
+              </a>
+            </li>
+          
+          </ul>
+  
+         
+        </div>
+      </nav>
+  
+      
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h2 class="mt-2">Movie Genre Classification Summary</h2>
+        
+            <div class="btn-toolbar mb-2 mb-md-0">
+                {% comment %} <div class="btn-group me-2">
+                  <button type="button" class="btn btn-outline-secondary">Run</button>
+               
+                </div>
+               {% endcomment %}
+              </div>
+        </div>
+        <div>
+            F1 Score: {{f1}}
+        </div>
+        <div class="table-responsive">
+          <table class="table table-striped table-sm">
+            <thead>
+              <tr>
+                <th scope="col">Movie Name</th>
+                <th scope="col">Predicted Genre</th>
+                <th scope="col">Actual Genre</th>
+              </tr>
+            </thead>
+            <tbody>
+                
+        {% for i in predictionArr %}
+              <tr>
+                <td>{{i.Movie}}</td>
+                <td>{{i.Predicted_genre}}</td>
+                <td>{{i.Actual_genre}}</td>
+              </tr>
+             
+        {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      
+         <div class="row" >
+        <div class="card mt-2" style="width: 50rem; padding:2px; margin-right:20px">
+            <img src='data:image/png;base64,{{ genreSummaryGraph }}' class="card-img-top"> 
+            <div class="card-body">
+                <h5 class="card-title text-center">Genre Summary</h5>
+            </div>
+           
+            
+        </div> 
+
+        <div class="card mt-2" style="width: 50rem; padding:2px; margin-right:20px">
+            <img src='data:image/png;base64,{{ freqwordSummaryGraph }}' class="card-img-top"> 
+            <div class="card-body">
+                <h5 class="card-title text-center">Frequent Word Summary</h5>
+            </div>
+           
+            
+        </div> 
+        </div> 
+        
+      
+      </main>
+    </div>
+  </div>
+{% endblock content %}

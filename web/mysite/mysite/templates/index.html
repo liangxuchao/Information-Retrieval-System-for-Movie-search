@@ -1,0 +1,198 @@
+
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+<script src="{% static 'js/jquery.js' %}"></script>   
+<script src="{% static 'js/bootstrap.min.js' %}"></script>   
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.min.js"></script>
+<header class="section-header">
+    <nav class="navbar navbar-dark navbar-expand p-0 bg-dark">
+        <div class="container-fluid">
+            <ul class="navbar-nav d-none d-md-flex mr-auto">
+                {% comment %} <li class="nav-item"><a class="nav-link" href="#" data-abc="true">Cash On Delivery</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" data-abc="true">Free Delivery</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" data-abc="true">Cash Backs</a></li> {% endcomment %}
+            </ul>
+            <ul class="navbar-nav d-flex align-items-center">
+                {% comment %} <li class="nav-item">
+                    <div class="d-flex flex-row"> <img src="https://i.imgur.com/EYFtR83.jpg" class="rounded-circle" width="30"> </div>
+                </li> {% endcomment %}
+                <li class="nav-item"> <a href="{% url 'index' %}" class="nav-link d-flex align-items-center" data-abc="true"><span>Movie Search</span><i class='bx bxs-chevron-down'></i></a> </li>
+                <li class="nav-item"> <a href="{% url 'genreclassifytfidf' %}" class="nav-link d-flex align-items-center" data-abc="true"><span>Classification</span><i class='bx bxs-chevron-down'></i></a> </li>
+            </ul> <!-- list-inline // -->
+        </div> <!-- navbar-collapse .// -->
+        <!-- container // -->
+    </nav> <!-- header-top-light.// -->
+    
+</header>
+<div class="container-fluid">
+<div class="row ">
+    <div class="col-lg-2 ">
+        <form method="post">
+            {% csrf_token %}
+               
+            {% comment %} <div class="col-md-2"> <img class="d-none d-md-flex" src="https://i.imgur.com/R8QhGhk.png" width="100"> </div> {% endcomment %}
+           
+                <div class="d-flex mt-1 form-inputs"> 
+                    {{ form.freetext }}
+
+                    <datalist id="datalistOptions">
+                      
+                      </datalist>
+                </div>
+            
+        <div class="input-group mt-2">
+        {{form.Year}}
+            
+        {{form.Movielength}}
+    </div> 
+    <div class="mt-2">
+        <hr/>
+        Category
+        {{form.Category}}  
+    </div> 
+    <div>
+        <hr/>
+       
+        <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="">Search for </span>
+            </div>
+            {{form.ShowRecords}}  
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="">Records</span>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="">Sort By </span>
+            </div>
+            {{form.sortby}}  
+
+            {{form.sortseq}}  
+            
+        </div>
+        <hr/>
+    </div>
+        <div class="input-group mt-2">
+                 
+            <button  class="btn btn-primary mr-2"  type="submit">Search</button>
+            <button  class="btn btn-secondary " onclick="window.location.replace('/');" type="button">Reset</button>
+        </div> 
+
+        </form> 
+    </div>
+    <div class="col-lg-10">
+        {% comment %} <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid"> <a class="navbar-brand d-md-none d-md-flex" href="#">Categories</a> 
+                <div  id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"> <a class="nav-link active" aria-current="page" href="#">Result</a> </li>
+                      
+                    </ul>
+                </div>
+            </div>
+        </nav> {% endcomment %}
+
+       
+        <div class="row" >
+            {% if suggeststringShow != "" %}
+            <div class="col-md-12 mt-1">
+
+                <h6>Show search result for: <b>{{suggeststringShow}}</b></h6>
+             </div>
+            {% endif %}
+           
+           
+        {% for i in result.docs %}
+        
+             {% comment %} <div class="card " style="width: 20rem;">
+                <div class="col-md-4">
+                    <img src="{{i.Poster}}" class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                    <h5 class="card-title">{{i.Name}}</h5>
+                    <p class="card-text " style="font-size:12px">{{i.Description}}</p>
+                    <p class="card-text"><small class="text-muted">{{i.Year}}</small></p>
+                    </div>
+                </div>
+            </div> {% endcomment %}
+
+            <div class="card mt-2" style="width: 15rem; padding:10px; margin-right:20px">
+                <img src="{{i.Poster}}" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">{{i.Name.0}}</h5>
+                  <p class="card-text"  style="font-size:12px">{{i.Description.0}}</p>
+                 
+                  <b>Director: </b>
+                  <p>{{i.Director.0}}</p>   
+                  <b>Actors:  </b>
+                  <p>{{i.Star.0}}</p>
+
+                  <b>Genre:  </b>
+                  <p>{{i.Genre.0}}</p>
+                  
+                  <b>Genre:  </b>
+                  <p>{{i.Genre.0}}</p>
+
+                  <b>Movie length:  </b>
+                  <p>{{i.Time}} mins</p>
+                </div>
+                <div class="card-footer bg-dark">
+                    <div style="float:left">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="yellow" class="bi bi-star-fill" viewBox="0 0 16 16">
+                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                        </svg>
+                        <div style="color:white">{{i.Rate}}</div>
+                    </div>
+                 <div style="color:white; float:left; margin-left:10px; font-size:10px">| Votes: {{i.Votes}}</div>
+                    <div style="color:white; float:right">{{i.Year}}</div>
+                </div>
+                   
+                
+            </div> 
+        {% endfor %}
+        </div> 
+    
+          {% comment %} <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+          </nav> {% endcomment %}
+        </div>
+</div>
+</div>
+   <script>
+
+    $('#freesearch').keyup(function() {
+        $("#datalistOptions").html("")
+        var dInput = this.value;
+        console.log(dInput)
+        $.ajax({url: "http://localhost:8983/solr/CSVCore/suggest?suggest.q=" + dInput,
+        data:{csrfmiddlewaretoken: '{{ csrf_token }}'},
+        success: function(result){
+            var arr =result.suggest.fuzzySuggester[dInput].suggestions;
+           console.log(arr)
+           for(var i=0; i< arr.length; i++){
+
+            $("#datalistOptions").append("<option value='" + arr[i].term+ "'>")
+           }
+
+          }});
+      });
+
+   
+   </script>
+{% endblock content %}
