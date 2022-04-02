@@ -10,4 +10,6 @@ This project include Web UI for Movie search, using Solr as backend api server a
     - install Tensorflow version > 2.5
     - install cuda tools if using GPU for deep learning
  
+ Sample data in web/mysite/mysite/data.csv
  
+ After install solr, create a core and replace the schema and config file in the config folder.
